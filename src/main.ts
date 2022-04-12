@@ -151,7 +151,6 @@ const run: any = async () => {
   option = select.value
 
   while (option !== options.QUIT) {
-
     switch (option) {
       case options.VERYEASY:
         await wordle(options.VERYEASY)
@@ -183,8 +182,10 @@ const wordle: any = async function (level: string) {
   }
 
   const text: any = input.value
-  const wordIsValid = words.includes(text) || Object.values(options).includes(text)
 
+  const wordIsValid = (
+    words.includes(text) || Object.values(options).includes(text) 
+  )
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
     await wordle(option)
@@ -208,8 +209,8 @@ const wordle: any = async function (level: string) {
   const rowFulfilled: any = []
   Object.values(rowDict).map((item:any, index:any) => {
     const value: any = item.value
-    const has: any = answerLetters.includes(item.value)
     const guessedLetter: any = answerLetters[index]
+    const has: any = answerLetters.includes(item.value)
     const samePosition: any = has && guessedLetter === item.value
     if (has) {
       rowDict[index].color = BgYellow
@@ -244,7 +245,6 @@ const wordle: any = async function (level: string) {
   }
 
   log('\n');
-
   keyboardBuilder(keyboardDict) 
 }
 
