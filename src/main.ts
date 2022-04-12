@@ -3,6 +3,8 @@ import prompt from 'prompt-sync'
 import prompts  from 'prompts'
 import { readFileSync } from 'fs'
 
+const log: any = console.log
+
 // these are some codes to get the console to print in colors
 // see examples below
 const Reset = "\x1b[0m"
@@ -59,13 +61,13 @@ const keyboardBuilder: any = (keys:any) => {
   })
 
 
-  console.log('|', '-'.repeat(57), '|')
+  log('|', '-'.repeat(57), '|')
   const firstRow: any =
     lettersArrayFulfilled.slice(
       0,
       lettersArray.indexOf('A')
     )
-  console.log('|', firstRow.join(' | '), '|')
+  log('|', firstRow.join(' | '), '|')
 
   const secondRow: any =
     lettersArrayFulfilled.slice(
@@ -73,16 +75,16 @@ const keyboardBuilder: any = (keys:any) => {
       lettersArray.indexOf('X')
     )
 
-  console.log('|', '-'.repeat(57), '|')
-  console.log('|', secondRow.join(' | '), '|')
-  console.log('|', '-'.repeat(57), '|')
+  log('|', '-'.repeat(57), '|')
+  log('|', secondRow.join(' | '), '|')
+  log('|', '-'.repeat(57), '|')
 
   const thirdRow: any =
     lettersArrayFulfilled.slice(
       lettersArray.indexOf('Z')
     )
-  console.log('|        |', thirdRow.join(' | '), '|        |')
-  console.log('|', '-'.repeat(57), '|')
+  log('|        |', thirdRow.join(' | '), '|        |')
+  log('|', '-'.repeat(57), '|')
 }
 
 
@@ -172,7 +174,7 @@ const run: any = async () => {
 
     const wordIsValid = words.includes(text)
     // const answer: any = "aotrr"
-    console.log('answer: ', answer);
+    log('answer: ', answer);
     const answerLetters: any = answer.split('')
     const guessLetters: any = text.split('')
 
@@ -211,18 +213,18 @@ const run: any = async () => {
     const divider: any = ` | ---`.repeat(5) + ' |'
     const emptyRow: any = ' |    '.repeat(5) + ' |' 
 
-    console.log(divider)
+    log(divider)
     for (let i = 0, len = 6; i < len; i++) {
       const wordArray: any = history[i]
       let row: any = emptyRow
       if (wordArray) {
         row = ` | ${wordArray.join(' | ')} |`
       }
-      console.log(row)
-      console.log(divider)
+      log(row)
+      log(divider)
     }
 
-    console.log('\n');
+    log('\n');
 
     keyboardBuilder(keyboardDict) 
   }
