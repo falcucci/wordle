@@ -45,35 +45,35 @@ const answer: any = answers[random(answers.length)]
 
 const selectChoices: any = [
   {
-    title: 'QUIT',
-    description: 'exit the game',
-    value: 'QUIT'
-  },
-  {
-    title: 'HELP',
-    description: 'print the list of commands and their description',
-    value: 'HELP'
-  },
-  {
     title: 'VERY EASY',
-    description: 'easy mode but using autocomplete',
+    description: 'easy mode but using autocomplete :)',
     value: 'VERYEASY'
   },
   {
     title: 'EASY',
-    description: 'restart a game, in normal mode',
+    description: 'initialize a game, in normal mode',
     value: 'EASY'
   },
   {
     title: 'HARD',
-    value: 'restart a game, in hard mode',
-    disabled: true
+    value: 'initialize a game, in hard mode',
   },
   {
     title: 'STAT',
     value: 'print some statistics',
     disabled: true
-  }
+  },
+  {
+    title: 'HELP',
+    description: 'print the list of commands and their description',
+    value: 'HELP',
+    disabled: true
+  },
+  {
+    title: 'QUIT',
+    description: 'exit the game',
+    value: 'QUIT'
+  },
 ]
 
 /**
