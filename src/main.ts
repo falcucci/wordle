@@ -135,24 +135,15 @@ const run: any = async () => {
 
   while (option !== options.QUIT) {
 
-    // const input: any = await prompts({
-    //   type: 'text',
-    //   name: 'value',
-    //   initial: 'HELP',
-    //   message: 'Your guess?',
-    //   validate: value => (
-    //     !words.includes(value) && !Object.values(options).includes(value)
-    //       ? `${value} is not a valid word.`
-    //       : true
-    //   )
-    // });
-
     switch (option) {
       case options.VERYEASY:
         await wordle(options.VERYEASY)
+        break
       case options.EASY:
         await wordle(options.EASY)
+        break
       case options.HARD:
+        await wordle(options.HARD)
         break
       case options.STAT:
         break
@@ -163,11 +154,12 @@ const run: any = async () => {
       default:
         break
     }
-
   }
 }
 
 const wordle: any = async function (level: string) {
+  console.log('level: ', level);
+  console.log('option: ', option);
   const input: any = await prompts(getInput(level))
 
   if (Object.values(options).includes(input.value)) {
@@ -253,6 +245,28 @@ const getInput: any = (option:any) => {
       name: 'value',
       message: 'Pick up your word to guess',
       choices: [...autoCompleteOptions, ...autoCompleteWords]
+    }],
+    [options.EASY]: [{
+      type: 'text',
+      name: 'value',
+      message: 'Your guess?',
+      validate: (value:any) => (
+        !words.includes(value) &&
+          !Object.values(options).includes(value)
+          ? `${value} is not a valid word.`
+          : true
+      ) 
+    }],
+    [options.HARD]: [{
+      type: 'text',
+      name: 'value',
+      message: 'Your guess?',
+      validate: (value:any) => (
+        !words.includes(value) &&
+          !Object.values(options).includes(value)
+          ? `${value} is not a valid word.`
+          : true
+      ) 
     }]
   }[option]
 }
