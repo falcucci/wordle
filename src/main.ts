@@ -49,6 +49,12 @@ const answers: string[] = readFileSync(
 
 const answer: any = answers[random(answers.length)]
 
+/**
+ * [TODO:description]
+ *
+ * @param {any} keys - [TODO:description]
+ * @returns {[TODO:type]} [TODO:description]
+ */
 const keyboardBuilder: any = (keys:any) => {
   // formats the key with the color
   const lettersArray: any = Object.keys(keys)
@@ -90,8 +96,9 @@ const keyboardBuilder: any = (keys:any) => {
 
 const options: any = {
   QUIT: "QUIT",
-  HARD: "HARD",
+  VERYEASY: "VERYEASY",
   EASY: "EASY",
+  HARD: "HARD",
   STAT: "STAT",
   HELP: "HELP"
 }
@@ -113,14 +120,16 @@ const run: any = async () => {
     choices: [
       { title: 'QUIT', description: 'exit the game', value: 'QUIT' },
       { title: 'HELP', description: 'print the list of commands and their description', value: 'HELP' },
+      { title: 'VERY EASY', description: 'easy mode but using autocomplete', value: 'VERYEASY' },
+      { title: 'EASY', description: 'restart a game, in normal mode', value: 'EASY' },
       { title: 'HARD', value: 'restart a game, in hard mode', disabled: true },
-      { title: 'EASY', value: 'restart a game, in normal mode', disabled: true },
       { title: 'STAT', value: 'print some statistics', disabled: true },
     ],
-    initial: 1
+    initial: 2
   })
 
   option = select.value
+  console.log('option: ', option);
   // if (Object.values(options).includes(text)) {
   // }
 
@@ -137,29 +146,12 @@ const run: any = async () => {
     //       : true
     //   )
     // });
-    const input: any = await prompts({
-      type: 'autocomplete',
-      name: 'value',
-      message: 'Pick up your word to guess',
-      choices: [...autoCompleteOptions, ...autoCompleteWords],
-      validate: value => (
-        !words.includes(value) && !Object.values(options).includes(value)
-          ? `${value} is not a valid word.`
-          : true
-      ),
-    })
-
-    if (Object.values(options).includes(input.value)) {
-      option = input.value
-    }
-
-    console.clear()
-
-    const text: any = input.value
 
     switch (option) {
+      case options.VERYEASY:
+        await wordle(option)
       case options.EASY:
-        break
+        await wordle(option)
       case options.HARD:
         break
       case options.STAT:
@@ -172,62 +164,92 @@ const run: any = async () => {
         break
     }
 
-    const wordIsValid = words.includes(text)
-    // const answer: any = "aotrr"
-    log('answer: ', answer);
-    const answerLetters: any = answer.split('')
-    const guessLetters: any = text.split('')
+  }
+}
 
-    const rowDict: any = {}
-    guessLetters.map((letter:any, index:any) => {
-      return rowDict[ parseInt(index) ] = {
-        value: letter,
-        color: BgWhite
-      }
-    })
+const wordle: any = async function (argument: string) {
+  const input: any = await prompts([{
+    type: 'autocomplete',
+    name: 'value',
+    message: 'Pick up your word to guess',
+    choices: [...autoCompleteOptions, ...autoCompleteWords],
+    validate: value => (
+      !words.includes(value) &&
+      !Object.values(options).includes(value)
+        ? `${value} is not a valid word.`
+        : true
+    ),
+  }])
 
-    const rowFulfilled: any = []
-    Object.values(rowDict).map((item:any, index:any) => {
-      const value: any = item.value
-      const has: any = answerLetters.includes(item.value)
-      const guessedLetter: any = answerLetters[index]
-      const samePosition: any = has && guessedLetter === item.value
-      if (has) {
-        rowDict[index].color = BgYellow
-        keyboardDict[value.toUpperCase()].color = BgYellow
-      } else {
-        keyboardDict[value.toUpperCase()].color = BgWhite
-      }
+  if (Object.values(options).includes(input.value)) {
+    option = input.value
+  }
 
-      if (samePosition) {
-        rowDict[index].color = BgGreen
-        keyboardDict[value.toUpperCase()].color = BgGreen
-      }
+  const text: any = input.value
+  const wordIsValid = words.includes(text) || Object.values(options).includes(text)
+  console.log('text: ', text);
 
-      rowFulfilled.push(
-        `${item.color} ${item.value} ${Reset}`
-      )
-    })
+  if (!wordIsValid) {
+    console.log(`${BgRed}Please type a valid word.${Reset}`);
+    return await wordle(option)
+  }
 
-    history.push(rowFulfilled)
-    const divider: any = ` | ---`.repeat(5) + ' |'
-    const emptyRow: any = ' |    '.repeat(5) + ' |' 
+  console.clear()
 
-    log(divider)
-    for (let i = 0, len = 6; i < len; i++) {
-      const wordArray: any = history[i]
-      let row: any = emptyRow
-      if (wordArray) {
-        row = ` | ${wordArray.join(' | ')} |`
-      }
-      log(row)
-      log(divider)
+  // const answer: any = "aotrr"
+  log('answer: ', answer);
+  const answerLetters: any = answer.split('')
+  const guessLetters: any = text.split('')
+
+  const rowDict: any = {}
+  guessLetters.map((letter:any, index:any) => {
+    return rowDict[ parseInt(index) ] = {
+      value: letter,
+      color: BgWhite
+    }
+  })
+
+  const rowFulfilled: any = []
+  Object.values(rowDict).map((item:any, index:any) => {
+    const value: any = item.value
+    const has: any = answerLetters.includes(item.value)
+    const guessedLetter: any = answerLetters[index]
+    const samePosition: any = has && guessedLetter === item.value
+    if (has) {
+      rowDict[index].color = BgYellow
+      keyboardDict[value.toUpperCase()].color = BgYellow
+    } else {
+      keyboardDict[value.toUpperCase()].color = BgWhite
     }
 
-    log('\n');
+    if (samePosition) {
+      rowDict[index].color = BgGreen
+      keyboardDict[value.toUpperCase()].color = BgGreen
+    }
 
-    keyboardBuilder(keyboardDict) 
+    rowFulfilled.push(
+      `${item.color} ${item.value} ${Reset}`
+    )
+  })
+
+  history.push(rowFulfilled)
+  const divider: any = ` | ---`.repeat(5) + ' |'
+  const emptyRow: any = ' |    '.repeat(5) + ' |' 
+
+  log(divider)
+  for (let i = 0, len = 6; i < len; i++) {
+    const wordArray: any = history[i]
+    let row: any = emptyRow
+    if (wordArray) {
+      row = ` | ${wordArray.join(' | ')} |`
+    }
+    log(row)
+    log(divider)
   }
+
+  log('\n');
+
+  keyboardBuilder(keyboardDict) 
 }
 
 run()
