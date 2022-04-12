@@ -1,12 +1,8 @@
-// these are the two libraries we need
-import prompt from 'prompt-sync'
 import prompts  from 'prompts'
 import { readFileSync } from 'fs'
 
 const log: any = console.log
 
-// these are some codes to get the console to print in colors
-// see examples below
 const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
 const BgGreen = "\x1b[42m"
@@ -15,8 +11,6 @@ const BgBlue = "\x1b[44m"
 const BgMagenta = "\x1b[45m"
 const BgCyan = "\x1b[46m"
 const BgWhite = "\x1b[47m"
-
-const input:any = prompt();
 
 // QWERT keys
 const qwert: any =
@@ -49,6 +43,39 @@ const answers: string[] = readFileSync(
 
 const answer: any = answers[random(answers.length)]
 
+const selectChoices: any = [
+  {
+    title: 'QUIT',
+    description: 'exit the game',
+    value: 'QUIT'
+  },
+  {
+    title: 'HELP',
+    description: 'print the list of commands and their description',
+    value: 'HELP'
+  },
+  {
+    title: 'VERY EASY',
+    description: 'easy mode but using autocomplete',
+    value: 'VERYEASY'
+  },
+  {
+    title: 'EASY',
+    description: 'restart a game, in normal mode',
+    value: 'EASY'
+  },
+  {
+    title: 'HARD',
+    value: 'restart a game, in hard mode',
+    disabled: true
+  },
+  {
+    title: 'STAT',
+    value: 'print some statistics',
+    disabled: true
+  }
+]
+
 /**
  * [TODO:description]
  *
@@ -63,11 +90,11 @@ const keyboardBuilder: any = (keys:any) => {
     lettersArrayFulfilled.push(
       `${keys[letter].color} ${letter} ${Reset}`
     )
-    return true
   })
 
+  const divider: any = '| ' + '-'.repeat(57) + ' |'
 
-  log('|', '-'.repeat(57), '|')
+  log(divider)
   const firstRow: any =
     lettersArrayFulfilled.slice(
       0,
@@ -81,9 +108,9 @@ const keyboardBuilder: any = (keys:any) => {
       lettersArray.indexOf('X')
     )
 
-  log('|', '-'.repeat(57), '|')
+  log(divider)
   log('|', secondRow.join(' | '), '|')
-  log('|', '-'.repeat(57), '|')
+  log(divider)
 
   const thirdRow: any =
     lettersArrayFulfilled.slice(
@@ -92,7 +119,6 @@ const keyboardBuilder: any = (keys:any) => {
   log('|        |', thirdRow.join(' | '), '|        |')
   log('|', '-'.repeat(57), '|')
 }
-
 
 const options: any = {
   QUIT: "QUIT",
@@ -117,14 +143,7 @@ const run: any = async () => {
     type: 'select',
     name: 'value',
     message: 'Available commands:',
-    choices: [
-      { title: 'QUIT', description: 'exit the game', value: 'QUIT' },
-      { title: 'HELP', description: 'print the list of commands and their description', value: 'HELP' },
-      { title: 'VERY EASY', description: 'easy mode but using autocomplete', value: 'VERYEASY' },
-      { title: 'EASY', description: 'restart a game, in normal mode', value: 'EASY' },
-      { title: 'HARD', value: 'restart a game, in hard mode', disabled: true },
-      { title: 'STAT', value: 'print some statistics', disabled: true },
-    ],
+    choices: selectChoices,
     initial: 2
   })
 
