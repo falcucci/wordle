@@ -149,9 +149,9 @@ const run: any = async () => {
 
     switch (option) {
       case options.VERYEASY:
-        await wordle(option)
+        await wordle(options.VERYEASY)
       case options.EASY:
-        await wordle(option)
+        await wordle(options.EASY)
       case options.HARD:
         break
       case options.STAT:
@@ -167,19 +167,8 @@ const run: any = async () => {
   }
 }
 
-const wordle: any = async function (argument: string) {
-  const input: any = await prompts([{
-    type: 'autocomplete',
-    name: 'value',
-    message: 'Pick up your word to guess',
-    choices: [...autoCompleteOptions, ...autoCompleteWords],
-    validate: value => (
-      !words.includes(value) &&
-      !Object.values(options).includes(value)
-        ? `${value} is not a valid word.`
-        : true
-    ),
-  }])
+const wordle: any = async function (level: string) {
+  const input: any = await prompts(getInput(level))
 
   if (Object.values(options).includes(input.value)) {
     option = input.value
@@ -187,7 +176,6 @@ const wordle: any = async function (argument: string) {
 
   const text: any = input.value
   const wordIsValid = words.includes(text) || Object.values(options).includes(text)
-  console.log('text: ', text);
 
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
@@ -196,7 +184,6 @@ const wordle: any = async function (argument: string) {
 
   console.clear()
 
-  // const answer: any = "aotrr"
   log('answer: ', answer);
   const answerLetters: any = answer.split('')
   const guessLetters: any = text.split('')
@@ -250,6 +237,24 @@ const wordle: any = async function (argument: string) {
   log('\n');
 
   keyboardBuilder(keyboardDict) 
+}
+
+
+/**
+ * [TODO:description]
+ *
+ * @param {any} option - [TODO:description]
+ * @returns {[TODO:type]} [TODO:description]
+ */
+const getInput: any = (option:any) => {
+  return {
+    [options.VERYEASY]: [{
+      type: 'autocomplete',
+      name: 'value',
+      message: 'Pick up your word to guess',
+      choices: [...autoCompleteOptions, ...autoCompleteWords]
+    }]
+  }[option]
 }
 
 run()
