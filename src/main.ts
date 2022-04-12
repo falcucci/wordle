@@ -34,7 +34,7 @@ const random = (a = 1, b = 0) => {
 };
 
 const words: string[] = readFileSync(
-  'allwords.txt',
+  './static/allwords.txt',
   'utf-8'
 ).split("\n")
 
@@ -43,7 +43,7 @@ const autoCompleteWords: any = words.map((word:any) => {
 })
 
 const answers: string[] = readFileSync(
-  'answers.txt',
+  './static/answers.txt',
   'utf-8'
 ).split("\n")
 
