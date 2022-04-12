@@ -56,7 +56,8 @@ const selectChoices: any = [
   },
   {
     title: 'HARD',
-    value: 'initialize a game, in hard mode',
+    description: 'initialize a game, in hard mode',
+    value: 'HARD'
   },
   {
     title: 'STAT',
