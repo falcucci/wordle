@@ -45,7 +45,7 @@ const answer: any = answers[random(answers.length)]
 
 const selectChoices: any = [
   {
-    title: 'VERY EASY',
+    title: 'EZ',
     description: 'easy mode but using autocomplete :)',
     value: 'VERYEASY'
   },
@@ -143,7 +143,7 @@ const run: any = async () => {
   const select: any = await prompts({
     type: 'select',
     name: 'value',
-    message: 'Available commands:',
+    message: 'WORDLE',
     choices: selectChoices,
     initial: 2
   })
