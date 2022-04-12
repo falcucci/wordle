@@ -129,9 +129,6 @@ const run: any = async () => {
   })
 
   option = select.value
-  console.log('option: ', option);
-  // if (Object.values(options).includes(text)) {
-  // }
 
   while (option !== options.QUIT) {
 
@@ -158,12 +155,11 @@ const run: any = async () => {
 }
 
 const wordle: any = async function (level: string) {
-  console.log('level: ', level);
-  console.log('option: ', option);
   const input: any = await prompts(getInput(level))
 
   if (Object.values(options).includes(input.value)) {
     option = input.value
+    return
   }
 
   const text: any = input.value
@@ -171,7 +167,8 @@ const wordle: any = async function (level: string) {
 
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
-    return await wordle(option)
+    await wordle(option)
+    return
   }
 
   console.clear()
