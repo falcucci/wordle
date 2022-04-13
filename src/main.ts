@@ -27,25 +27,6 @@ const random = (a = 1, b = 0) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1))
 };
 
-const words: string[] = readFileSync(
-  './static/allwords.txt',
-  'utf-8'
-).split("\n")
-
-const autoCompleteWords: any = words.map((word:any) => {
-  return { title: word, value: word }
-})
-
-const answers: string[] = readFileSync(
-  './static/answers.txt',
-  'utf-8'
-).split("\n")
-
-const answer: any = answers[random(answers.length)]
-
-const congratsMsg: string =
-  `\n🌈 CONGRATS, YOU GUESSED THE WORD ${answer.toUpperCase()} ❤️"`
-
 const selectChoices: any = [
   {
     title: 'EZ',
@@ -169,16 +150,49 @@ const run: any = async () => {
 
   option = select.value
   const language: any = languages.value
+  const words: string[] = readFileSync(
+    `./static/${language}/words.txt`,
+    'utf-8'
+  ).split("\n")
+
+  const autoCompleteWords: any = words.map((word:any) => {
+    return { title: word, value: word }
+  })
+
+  const answers: string[] = readFileSync(
+    `./static/${language}/answers.txt`,
+    'utf-8'
+  ).split("\n")
+
+  const answer: any = answers[random(answers.length)]
 
   switch (option) {
     case options.EZ:
-      await wordle(options.EZ)
+      await wordle(
+        language,
+        options.EZ,
+        words,
+        answer,
+        autoCompleteWords
+      )
     break
     case options.EASY:
-      await wordle(options.EASY)
+      await wordle(
+        language,
+        options.EASY,
+        words,
+        answer,
+        autoCompleteWords
+      )
     break
     case options.HARD:
-      await wordle(options.HARD)
+      await wordle(
+        language,
+        options.HARD,
+        words,
+        answer,
+        autoCompleteWords
+      )
     break
     case options.STAT:
       break
@@ -191,8 +205,19 @@ const run: any = async () => {
   } 
 }
 
-const wordle: any = async function (level: string) {
-  const input: any = await prompts(getInput(level))
+const wordle: any = async function (
+  language: string,
+  level: string,
+  words: string[],
+  answer: string,
+  autoCompleteWords: any,
+) {
+  const input: any = await prompts(getInput(
+    level,
+    words,
+    autoCompleteWords
+  ))
+
   if (Object.values(options).includes(input.value)) {
     option = input.value
     return
@@ -205,7 +230,7 @@ const wordle: any = async function (level: string) {
   )
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
-    return await wordle(option)
+    return await wordle(language, option, words, autoCompleteWords)
   }
 
   console.clear()
@@ -264,12 +289,15 @@ const wordle: any = async function (level: string) {
   log('\n');
   keyboardBuilder(keyboardDict) 
 
+  const congratsMsg: string =
+    `\n🌈 CONGRATS, YOU GUESSED THE WORD ${answer.toUpperCase()} ❤️"`
+
   if (answer === text) {
     log(congratsMsg)
     process.exit(0)
   }
 
-  return await wordle(level)
+  return await wordle(language, level, words, answer, autoCompleteWords)
 }
 
 
@@ -279,7 +307,11 @@ const wordle: any = async function (level: string) {
  * @param {any} option - [TODO:description]
  * @returns {[TODO:type]} [TODO:description]
  */
-const getInput: any = (option:any) => {
+const getInput: any = (
+  option:any,
+  words: string[],
+  autoCompleteWords: any
+) => {
   return {
     [options.EZ]: [{
       type: 'autocomplete',
