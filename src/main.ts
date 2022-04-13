@@ -122,8 +122,6 @@ const options: any = {
   QUIT: "QUIT"
 }
 
-let option: string = ""
-
 const autoCompleteOptions: any =
   Object.values(options).map((option:any) => {
   return { title: option, value: option }
@@ -148,7 +146,7 @@ const run: any = async () => {
     initial: 1
   })
 
-  option = select.value
+  const option: string = select.value
   const language: any = languages.value
   const words: string[] = readFileSync(
     `./static/${language}/words.txt`,
@@ -170,7 +168,7 @@ const run: any = async () => {
     case options.EZ:
       await wordle(
         language,
-        options.EZ,
+        option,
         words,
         answer,
         autoCompleteWords
@@ -179,7 +177,7 @@ const run: any = async () => {
     case options.EASY:
       await wordle(
         language,
-        options.EASY,
+        option,
         words,
         answer,
         autoCompleteWords
@@ -188,7 +186,7 @@ const run: any = async () => {
     case options.HARD:
       await wordle(
         language,
-        options.HARD,
+        option,
         words,
         answer,
         autoCompleteWords
@@ -207,19 +205,18 @@ const run: any = async () => {
 
 const wordle: any = async function (
   language: string,
-  level: string,
+  option: string,
   words: string[],
   answer: string,
   autoCompleteWords: any,
 ) {
   const input: any = await prompts(getInput(
-    level,
+    option,
     words,
     autoCompleteWords
   ))
 
   if (Object.values(options).includes(input.value)) {
-    option = input.value
     return
   }
 
@@ -297,7 +294,13 @@ const wordle: any = async function (
     process.exit(0)
   }
 
-  return await wordle(language, level, words, answer, autoCompleteWords)
+  return await wordle(
+    language,
+    option,
+    words,
+    answer,
+    autoCompleteWords
+  )
 }
 
 
