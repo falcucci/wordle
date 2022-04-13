@@ -2,6 +2,7 @@ import prompts  from 'prompts'
 import { readFileSync } from 'fs'
 
 const log: any = console.log
+const clear: any = console.clear
 
 const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
@@ -64,7 +65,7 @@ const selectChoices: any = [
 const languagesChoice: any = [
   { title: '🇧🇪  german', value: 'german', disabled: true },
   { title: '🇱🇷  english', value: 'english' },
-  { title: '🇮🇹  italian', value: 'italian', disabled: true },
+  { title: '🇮🇹  italian', value: 'italian' },
   { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
   { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
 ]
@@ -223,14 +224,21 @@ const wordle: any = async function (
   const text: any = input.value
 
   const wordIsValid = (
-    words.includes(text) || Object.values(options).includes(text) 
+    (words.includes(text) && text.length === 5) ||
+    Object.values(options).includes(text)
   )
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
-    return await wordle(language, option, words, autoCompleteWords)
+    return await wordle(
+      language,
+      option,
+      words,
+      answer,
+      autoCompleteWords
+    )
   }
 
-  console.clear()
+  clear()
 
   log('answer: ', answer);
   const answerLetters: any = answer.split('')
