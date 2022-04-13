@@ -145,7 +145,7 @@ const run: any = async () => {
     name: 'value',
     message: 'WORDLE',
     choices: selectChoices,
-    initial: 2
+    initial: 0
   })
 
   option = select.value
@@ -230,7 +230,8 @@ const wordle: any = async function (level: string) {
   const emptyRow: any = ' |    '.repeat(5) + ' |' 
 
   log(divider)
-  for (let i = 0, len = 6; i < len; i++) {
+  const changes: any = [...Array(6).keys()]
+  changes.map((i:any) => {
     const wordArray: any = history[i]
     let row: any = emptyRow
     if (wordArray) {
@@ -238,7 +239,7 @@ const wordle: any = async function (level: string) {
     }
     log(row)
     log(divider)
-  }
+  })
 
   log('\n');
   keyboardBuilder(keyboardDict) 
