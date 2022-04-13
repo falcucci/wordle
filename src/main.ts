@@ -149,28 +149,25 @@ const run: any = async () => {
   })
 
   option = select.value
-
-  while (option !== options.QUIT) {
-    switch (option) {
-      case options.VERYEASY:
-        await wordle(options.VERYEASY)
-        break
-      case options.EASY:
-        await wordle(options.EASY)
-        break
-      case options.HARD:
-        await wordle(options.HARD)
-        break
-      case options.STAT:
-        break
-      case options.HELP:
-        break
-      case options.QUIT:
-        break
-      default:
-        break
-    }
-  }
+  switch (option) {
+    case options.VERYEASY:
+      await wordle(options.VERYEASY)
+    break
+    case options.EASY:
+      await wordle(options.EASY)
+    break
+    case options.HARD:
+      await wordle(options.HARD)
+    break
+    case options.STAT:
+      break
+    case options.HELP:
+      break
+    case options.QUIT:
+      break
+    default:
+      break
+  } 
 }
 
 const wordle: any = async function (level: string) {
@@ -188,8 +185,7 @@ const wordle: any = async function (level: string) {
   )
   if (!wordIsValid) {
     console.log(`${BgRed}Please type a valid word.${Reset}`);
-    await wordle(option)
-    return
+    return await wordle(option)
   }
 
   console.clear()
@@ -246,6 +242,8 @@ const wordle: any = async function (level: string) {
 
   log('\n');
   keyboardBuilder(keyboardDict) 
+
+  return await wordle(level)
 }
 
 
