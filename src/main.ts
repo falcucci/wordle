@@ -80,7 +80,7 @@ const selectChoices: any = [
   },
 ]
 
-const laguagesChoice: any = [
+const languagesChoice: any = [
   { title: '🇧🇪  german', value: 'german', disabled: true },
   { title: '🇱🇷  english', value: 'english' },
   { title: '🇮🇹  italian', value: 'italian', disabled: true },
@@ -162,9 +162,8 @@ const run: any = async () => {
   const languages: any = await prompts({
     type: 'select',
     name: 'value',
-    style: 'emoji',
     message: 'Preferred language 🌎',
-    choices: laguagesChoice,
+    choices: languagesChoice,
     initial: 1
   })
 
