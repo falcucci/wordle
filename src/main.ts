@@ -47,7 +47,7 @@ const selectChoices: any = [
   {
     title: 'EZ',
     description: 'easy mode but using autocomplete :)',
-    value: 'VERYEASY'
+    value: 'EZ'
   },
   {
     title: 'EASY',
@@ -122,12 +122,12 @@ const keyboardBuilder: any = (keys:any) => {
 }
 
 const options: any = {
-  QUIT: "QUIT",
-  VERYEASY: "VERYEASY",
+  EZ: "EZ",
   EASY: "EASY",
   HARD: "HARD",
   STAT: "STAT",
-  HELP: "HELP"
+  HELP: "HELP",
+  QUIT: "QUIT"
 }
 
 let option: string = ""
@@ -150,8 +150,8 @@ const run: any = async () => {
 
   option = select.value
   switch (option) {
-    case options.VERYEASY:
-      await wordle(options.VERYEASY)
+    case options.EZ:
+      await wordle(options.EZ)
     break
     case options.EASY:
       await wordle(options.EASY)
@@ -254,7 +254,7 @@ const wordle: any = async function (level: string) {
  */
 const getInput: any = (option:any) => {
   return {
-    [options.VERYEASY]: [{
+    [options.EZ]: [{
       type: 'autocomplete',
       name: 'value',
       message: 'Pick up your word to guess',
