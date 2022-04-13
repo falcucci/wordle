@@ -14,11 +14,11 @@ const BgWhite = "\x1b[47m"
 
 // QWERT keys
 const qwert: any =
-  'q w e r t y u i o p a s d f g h j k l z x c v b n m';
+  'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
 
 const keyboardDict: any  = {}
 qwert.split(' ').map((letter:any) => {
-  return keyboardDict[ letter.toUpperCase() ] = { color: Reset }
+  return keyboardDict[ letter ] = { color: Reset }
 })
 
 const random = (a = 1, b = 0) => {
@@ -242,7 +242,6 @@ const wordle: any = async function (level: string) {
 
   log('\n');
   keyboardBuilder(keyboardDict) 
-
   return await wordle(level)
 }
 
