@@ -10,7 +10,7 @@ const BgYellow = "\x1b[43m"
 const BgBlue = "\x1b[44m"
 const BgMagenta = "\x1b[45m"
 const BgCyan = "\x1b[46m"
-const BgWhite = "\x1b[47m"
+const BgWhite = "\u001b[0m\u001b[7m"
 
 // QWERT keys
 const qwert: any =
