@@ -62,7 +62,7 @@ const selectChoices: any = [
   },
 ]
 
-const languagesChoice: any = [
+const languageChoices: any = [
   { title: '🇧🇪  german', value: 'german', disabled: true },
   { title: '🇱🇷  english', value: 'english' },
   { title: '🇮🇹  italian', value: 'italian' },
@@ -143,7 +143,7 @@ const run: any = async () => {
     type: 'select',
     name: 'value',
     message: 'Preferred language 🌎',
-    choices: languagesChoice,
+    choices: languageChoices,
     initial: 1
   })
 
