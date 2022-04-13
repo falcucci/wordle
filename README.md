@@ -6,7 +6,7 @@ The feedback for each guess is given in the form of colored tiles to indicate if
 
 ## Usage
 
-This game isn't publish on `npm` yet so run it locally to see how it works
+This game was't published at `npm` yet so run it locally to see how it works.
 
 install typescript globally:
 
