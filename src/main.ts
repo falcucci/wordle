@@ -80,6 +80,14 @@ const selectChoices: any = [
   },
 ]
 
+const laguagesChoice: any = [
+  { title: '🇧🇪  german', value: 'german', disabled: true },
+  { title: '🇱🇷  english', value: 'english' },
+  { title: '🇮🇹  italian', value: 'italian', disabled: true },
+  { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
+  { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
+]
+
 /**
  * [TODO:description]
  *
@@ -146,12 +154,23 @@ const run: any = async () => {
   const select: any = await prompts({
     type: 'select',
     name: 'value',
-    message: 'WORDLE',
+    message: '🌈 WORDLE 🌈',
     choices: selectChoices,
     initial: 0
   })
 
+  const languages: any = await prompts({
+    type: 'select',
+    name: 'value',
+    style: 'emoji',
+    message: 'Preferred language 🌎',
+    choices: laguagesChoice,
+    initial: 1
+  })
+
   option = select.value
+  const language: any = languages.value
+
   switch (option) {
     case options.EZ:
       await wordle(options.EZ)
