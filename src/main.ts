@@ -172,7 +172,6 @@ const run: any = async () => {
 
 const wordle: any = async function (level: string) {
   const input: any = await prompts(getInput(level))
-
   if (Object.values(options).includes(input.value)) {
     option = input.value
     return
