@@ -43,6 +43,9 @@ const answers: string[] = readFileSync(
 
 const answer: any = answers[random(answers.length)]
 
+const congratsMsg: string =
+  `\n🌈 CONGRATS, YOU GUESSED THE WORD ${answer.toUpperCase()} ❤️"`
+
 const selectChoices: any = [
   {
     title: 'EZ',
@@ -242,6 +245,12 @@ const wordle: any = async function (level: string) {
 
   log('\n');
   keyboardBuilder(keyboardDict) 
+
+  if (answer === text) {
+    log(congratsMsg)
+    process.exit(0)
+  }
+
   return await wordle(level)
 }
 
