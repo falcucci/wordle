@@ -80,7 +80,7 @@ const keyboardBuilder: any = (keys:any) => {
   // formats the key with the color
   const lettersArray: any = Object.keys(keys)
   const lettersArrayFulfilled: any = []
-  lettersArray.map((letter:any) => {
+  lettersArray.forEach((letter:any) => {
     lettersArrayFulfilled.push(
       `${keys[letter].color} ${letter} ${Reset}`
     )
@@ -245,7 +245,7 @@ const wordle: any = async function (
   const guessLetters: any = text.split('')
 
   const rowDict: any = {}
-  guessLetters.map((letter:any, index:any) => {
+  guessLetters.forEach((letter:any, index:any) => {
     return rowDict[ parseInt(index) ] = {
       value: letter,
       color: BgWhite
@@ -253,7 +253,7 @@ const wordle: any = async function (
   })
 
   const rowFulfilled: any = []
-  Object.values(rowDict).map((item:any, index:any) => {
+  Object.values(rowDict).forEach((item:any, index:any) => {
     const value: any = item.value
     const guessedLetter: any = answerLetters[index]
     const has: any = answerLetters.includes(item.value)
@@ -280,8 +280,8 @@ const wordle: any = async function (
   const emptyRow: any = ' |    '.repeat(5) + ' |' 
 
   log(divider)
-  const changes: any = [...Array(6).keys()]
-  changes.map((i:any) => {
+  const chances: any = [...Array(6).keys()]
+  chances.forEach((i:any) => {
     const wordArray: any = history[i]
     let row: any = emptyRow
     if (wordArray) {
