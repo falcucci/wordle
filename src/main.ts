@@ -257,9 +257,10 @@ const wordle: any = async function (
     const value: any = item.value
     const guessedLetter: any = answerLetters[index]
     const has: any = answerLetters.includes(item.value)
+    const position: any = answerLetters.indexOf(item.value)
     const samePosition: any = has && guessedLetter === item.value
     if (has) {
-      rowDict[index].color = BgYellow
+      rowDict[position].color = BgYellow
       keyboardDict[value.toUpperCase()].color = BgYellow
     } else {
       keyboardDict[value.toUpperCase()].color = BgWhite
