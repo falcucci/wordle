@@ -55,6 +55,11 @@ const selectChoices: any = [
   },
 ]
 
+const statuses: any = {
+  EMPTY: 'empty',
+  FILLED: 'filled'
+}
+
 // QWERT keys
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
@@ -248,7 +253,8 @@ const wordle: any = async function (
   guessLetters.forEach((letter:any, index:any) => {
     return rowDict[ parseInt(index) ] = {
       value: letter,
-      color: BgWhite
+      color: BgWhite,
+      status: statuses.EMPTY
     }
   })
 
@@ -258,23 +264,33 @@ const wordle: any = async function (
     const guessedLetter: any = answerLetters[index]
     const has: any = answerLetters.includes(item.value)
     const samePosition: any = has && guessedLetter === item.value
-    const repeating: any = answerLetters.filter(
+    const repeatingAnswer: any = answerLetters.filter(
       (a:any) => a === item.value
     ).length > 1
-    const position: number = (
-      repeating 
-      ? index
-      : guessedLetter.indexOf(answerLetters[index])
-    )
+    const repeatingGuessing: any = guessLetters.filter(
+      (a:any) => a === item.value
+    ).length > 1
+    const position: any = answerLetters.indexOf(item.value)
+    keyboardDict[value.toUpperCase()].color = BgWhite
+
     if (has) {
       rowDict[index].color = BgYellow
+      rowDict[index].status = statuses.FILLED
       keyboardDict[value.toUpperCase()].color = BgYellow
-    } else {
-      keyboardDict[value.toUpperCase()].color = BgWhite
+    }
+
+    const repeating: any = repeatingAnswer && repeatingGuessing
+    const shouldFill: boolean = (
+      has && rowDict[position].status === statuses.FILLED && !repeating
+    )
+    if (shouldFill) {
+      rowDict[index].color = BgWhite
+      rowDict[index].status = statuses.FILLED
     }
 
     if (samePosition) {
       rowDict[index].color = BgGreen
+      rowDict[index].status = statuses.FILLED
       keyboardDict[value.toUpperCase()].color = BgGreen
     }
 
