@@ -13,20 +13,13 @@ const BgMagenta = "\x1b[45m"
 const BgCyan = "\x1b[46m"
 const BgWhite = "\u001b[0m\u001b[7m"
 
-// QWERT keys
-const qwert: any =
-  'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
-
-const keyboardDict: any  = {}
-qwert.split(' ').map((letter:any) => {
-  return keyboardDict[ letter ] = { color: Reset }
-})
-
-const random = (a = 1, b = 0) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  return Math.floor(lower + Math.random() * (upper - lower + 1))
-};
+const languageChoices: any = [
+  { title: '🇧🇪  german', value: 'german', disabled: true },
+  { title: '🇱🇷  english', value: 'english' },
+  { title: '🇮🇹  italian', value: 'italian' },
+  { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
+  { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
+]
 
 const selectChoices: any = [
   {
@@ -62,13 +55,20 @@ const selectChoices: any = [
   },
 ]
 
-const languageChoices: any = [
-  { title: '🇧🇪  german', value: 'german', disabled: true },
-  { title: '🇱🇷  english', value: 'english' },
-  { title: '🇮🇹  italian', value: 'italian' },
-  { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
-  { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
-]
+// QWERT keys
+const qwert: any =
+  'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
+
+const keyboardDict: any  = {}
+qwert.split(' ').map((letter:any) => {
+  return keyboardDict[ letter ] = { color: Reset }
+})
+
+const random = (a = 1, b = 0) => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  return Math.floor(lower + Math.random() * (upper - lower + 1))
+};
 
 /**
  * [TODO:description]
