@@ -30,10 +30,11 @@ const options: any = {
   QUIT: "QUIT"
 }
 
-const autoCompleteOptions: any =
-  Object.values(options).map((option:any) => {
-  return { title: option, value: option }
-})
+const getAutocompleteOptions: any = (options:any) => {
+  return Object.values(options).map((option:any) => {
+    return { title: option, value: option }
+  })
+}
 
 const history: any = []
 
@@ -201,10 +202,12 @@ const wordle: any = async function (
   answer: string
 ) {
   const autoCompleteWords: any = getAutocompleteWords(words)
+  const autoCompleteOptions: any = getAutocompleteOptions(options)
   const input: any = await prompts(getInput(
     option,
     words,
-    autoCompleteWords
+    autoCompleteWords,
+    autoCompleteOptions
   ))
 
   if (Object.values(options).includes(input.value)) {
@@ -328,7 +331,8 @@ const wordle: any = async function (
 const getInput: any = (
   option:any,
   words: string[],
-  autoCompleteWords: any
+  autoCompleteWords: any,
+  autoCompleteOptions: any
 ) => {
   return {
     [options.EZ]: [{
