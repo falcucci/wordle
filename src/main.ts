@@ -37,7 +37,6 @@ const autoCompleteOptions: any =
 
 const history: any = []
 
-
 const statuses: any = {
   EMPTY: 'empty',
   FILLED: 'filled'
