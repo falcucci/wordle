@@ -60,7 +60,6 @@ const statuses: any = {
   FILLED: 'filled'
 }
 
-// QWERT keys
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
 
@@ -75,21 +74,25 @@ const random = (a = 1, b = 0) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1))
 };
 
-/**
- * [TODO:description]
- *
- * @param {any} keys - [TODO:description]
- * @returns {[TODO:type]} [TODO:description]
- */
-const keyboardBuilder: any = (keys:any) => {
-  // formats the key with the color
-  const lettersArray: any = Object.keys(keys)
+const formatArrayOfKeys: any = (keys: string[], keyboard:any) => {
+  // formats the key with the default color
   const lettersArrayFulfilled: any = []
-  lettersArray.forEach((letter:any) => {
+  keys.forEach((letter:any) => {
     lettersArrayFulfilled.push(
-      `${keys[letter].color} ${letter} ${Reset}`
+      `${keyboard[letter].color} ${letter} ${Reset}`
     )
   })
+  return lettersArrayFulfilled
+}
+
+const keyboardBuilder: any = (keys:any) => {
+  // formats the key with the default color
+  // do some refactor later
+  const lettersArray: any = Object.keys(keys)
+  const lettersArrayFulfilled: string[] =  formatArrayOfKeys(
+    lettersArray,
+    keys
+  )
 
   const divider: any = '| ' + '-'.repeat(57) + ' |'
 
