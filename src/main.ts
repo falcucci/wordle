@@ -108,6 +108,11 @@ const getWords: any = (language:string, file:string) => {
   ).split("\n")            
 }
 
+const getAnswer: any = (language:string, file:string) => {
+  const answers : string[] = getWords(language, file)
+  return answers[random(answers.length)]
+}
+
 const keyboardBuilder: any = (keys:any) => {
   // formats the key with the default color
   // do some refactor later
@@ -145,7 +150,6 @@ const keyboardBuilder: any = (keys:any) => {
   log('|', '-'.repeat(57), '|')
 }
 
-
 const run: any = async () => {
   const select: any = await prompts({
     type: 'select',
@@ -166,13 +170,7 @@ const run: any = async () => {
   const option: string = select.value
   const language: any = languages.value
   const words : string[] = getWords(language, 'words.txt')
-
-  const autoCompleteWords: any = words.map((word:any) => {
-    return { title: word, value: word }
-  })
-
-  const answers : string[] = getWords(language, 'answers.txt')
-  const answer: any = answers[random(answers.length)]
+  const answer: string = getAnswer(language, 'answers.txt')
 
   switch (option) {
     case options.EZ:
@@ -180,8 +178,7 @@ const run: any = async () => {
         language,
         option,
         words,
-        answer,
-        autoCompleteWords
+        answer
       )
     break
     case options.EASY:
@@ -189,8 +186,7 @@ const run: any = async () => {
         language,
         option,
         words,
-        answer,
-        autoCompleteWords
+        answer
       )
     break
     case options.HARD:
@@ -198,8 +194,7 @@ const run: any = async () => {
         language,
         option,
         words,
-        answer,
-        autoCompleteWords
+        answer
       )
     break
     case options.STAT:
@@ -217,9 +212,11 @@ const wordle: any = async function (
   language: string,
   option: string,
   words: string[],
-  answer: string,
-  autoCompleteWords: any,
+  answer: string
 ) {
+  const autoCompleteWords: any = words.map((word:any) => {
+    return { title: word, value: word }
+  })
   const input: any = await prompts(getInput(
     option,
     words,
@@ -242,8 +239,7 @@ const wordle: any = async function (
       language,
       option,
       words,
-      answer,
-      autoCompleteWords
+      answer
     )
   }
 
@@ -334,8 +330,7 @@ const wordle: any = async function (
     language,
     option,
     words,
-    answer,
-    autoCompleteWords
+    answer
   )
 }
 
