@@ -132,10 +132,7 @@ const keyboardBuilder: any = (keys:any) => {
 
   log(divider)
   const firstRow: any =
-    lettersArrayFulfilled.slice(
-      0,
-      lettersArray.indexOf('A')
-    )
+    lettersArrayFulfilled.slice(0, lettersArray.indexOf('A'))
   log('|', firstRow.join(' | '), '|')
 
   const secondRow: any =
@@ -149,9 +146,7 @@ const keyboardBuilder: any = (keys:any) => {
   log(divider)
 
   const thirdRow: any =
-    lettersArrayFulfilled.slice(
-      lettersArray.indexOf('Z')
-    )
+    lettersArrayFulfilled.slice(lettersArray.indexOf('Z'))
   log('|        |', thirdRow.join(' | '), '|        |')
   log('|', '-'.repeat(57), '|')
 }
@@ -223,7 +218,7 @@ const wordle: any = async function (
     Object.values(options).includes(text)
   )
   if (!wordIsValid) {
-    console.log(`${BgRed}Please type a valid word.${Reset}`);
+    log(`${BgRed}Please type a valid word.${Reset}`);
     return await wordle(
       language,
       option,
