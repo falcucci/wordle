@@ -174,28 +174,13 @@ const run: any = async () => {
 
   switch (option) {
     case options.EZ:
-      await wordle(
-        language,
-        option,
-        words,
-        answer
-      )
+      await wordle(language, option, words, answer)
     break
     case options.EASY:
-      await wordle(
-        language,
-        option,
-        words,
-        answer
-      )
+      await wordle(language, option, words, answer)
     break
     case options.HARD:
-      await wordle(
-        language,
-        option,
-        words,
-        answer
-      )
+      await wordle(language, option, words, answer)
     break
     case options.STAT:
       break
