@@ -113,6 +113,12 @@ const getAnswer: any = (language:string, file:string) => {
   return answers[random(answers.length)]
 }
 
+const getAutocompleteWords: any = (words:string[]) => {
+  return words.map((word:any) => {
+    return { title: word, value: word }
+  })
+}
+
 const keyboardBuilder: any = (keys:any) => {
   // formats the key with the default color
   // do some refactor later
@@ -199,9 +205,7 @@ const wordle: any = async function (
   words: string[],
   answer: string
 ) {
-  const autoCompleteWords: any = words.map((word:any) => {
-    return { title: word, value: word }
-  })
+  const autoCompleteWords: any = getAutocompleteWords(words)
   const input: any = await prompts(getInput(
     option,
     words,
