@@ -21,6 +21,28 @@ const languageChoices: any = [
   { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
 ]
 
+const options: any = {
+  EZ: "EZ",
+  EASY: "EASY",
+  HARD: "HARD",
+  STAT: "STAT",
+  HELP: "HELP",
+  QUIT: "QUIT"
+}
+
+const autoCompleteOptions: any =
+  Object.values(options).map((option:any) => {
+  return { title: option, value: option }
+})
+
+const history: any = []
+
+
+const statuses: any = {
+  EMPTY: 'empty',
+  FILLED: 'filled'
+}
+
 const selectChoices: any = [
   {
     title: 'EZ',
@@ -54,11 +76,6 @@ const selectChoices: any = [
     value: 'QUIT'
   },
 ]
-
-const statuses: any = {
-  EMPTY: 'empty',
-  FILLED: 'filled'
-}
 
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
@@ -122,21 +139,6 @@ const keyboardBuilder: any = (keys:any) => {
   log('|', '-'.repeat(57), '|')
 }
 
-const options: any = {
-  EZ: "EZ",
-  EASY: "EASY",
-  HARD: "HARD",
-  STAT: "STAT",
-  HELP: "HELP",
-  QUIT: "QUIT"
-}
-
-const autoCompleteOptions: any =
-  Object.values(options).map((option:any) => {
-  return { title: option, value: option }
-})
-
-const history: any = []
 
 const run: any = async () => {
   const select: any = await prompts({
