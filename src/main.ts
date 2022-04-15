@@ -37,7 +37,6 @@ const autoCompleteOptions: any =
 
 const history: any = []
 
-
 const statuses: any = {
   EMPTY: 'empty',
   FILLED: 'filled'
@@ -102,6 +101,13 @@ const formatArrayOfKeys: any = (keys: string[], keyboard:any) => {
   return lettersArrayFulfilled
 }
 
+const getWords: any = (language:string, file:string) => {
+  return readFileSync(
+    `./static/${language}/${file}`,
+    'utf-8'
+  ).split("\n")            
+}
+
 const keyboardBuilder: any = (keys:any) => {
   // formats the key with the default color
   // do some refactor later
@@ -159,20 +165,13 @@ const run: any = async () => {
 
   const option: string = select.value
   const language: any = languages.value
-  const words: string[] = readFileSync(
-    `./static/${language}/words.txt`,
-    'utf-8'
-  ).split("\n")
+  const words : string[] = getWords(language, 'words.txt')
 
   const autoCompleteWords: any = words.map((word:any) => {
     return { title: word, value: word }
   })
 
-  const answers: string[] = readFileSync(
-    `./static/${language}/answers.txt`,
-    'utf-8'
-  ).split("\n")
-
+  const answers : string[] = getWords(language, 'answers.txt')
   const answer: any = answers[random(answers.length)]
 
   switch (option) {
