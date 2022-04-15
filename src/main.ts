@@ -30,10 +30,11 @@ const options: any = {
   QUIT: "QUIT"
 }
 
-const autoCompleteOptions: any =
-  Object.values(options).map((option:any) => {
-  return { title: option, value: option }
-})
+const getAutocompleteOptions: any = (options:any) => {
+  return Object.values(options).map((option:any) => {
+    return { title: option, value: option }
+  })
+}
 
 const history: any = []
 
@@ -132,10 +133,7 @@ const keyboardBuilder: any = (keys:any) => {
 
   log(divider)
   const firstRow: any =
-    lettersArrayFulfilled.slice(
-      0,
-      lettersArray.indexOf('A')
-    )
+    lettersArrayFulfilled.slice(0, lettersArray.indexOf('A'))
   log('|', firstRow.join(' | '), '|')
 
   const secondRow: any =
@@ -149,9 +147,7 @@ const keyboardBuilder: any = (keys:any) => {
   log(divider)
 
   const thirdRow: any =
-    lettersArrayFulfilled.slice(
-      lettersArray.indexOf('Z')
-    )
+    lettersArrayFulfilled.slice(lettersArray.indexOf('Z'))
   log('|        |', thirdRow.join(' | '), '|        |')
   log('|', '-'.repeat(57), '|')
 }
@@ -206,10 +202,12 @@ const wordle: any = async function (
   answer: string
 ) {
   const autoCompleteWords: any = getAutocompleteWords(words)
+  const autoCompleteOptions: any = getAutocompleteOptions(options)
   const input: any = await prompts(getInput(
     option,
     words,
-    autoCompleteWords
+    autoCompleteWords,
+    autoCompleteOptions
   ))
 
   if (Object.values(options).includes(input.value)) {
@@ -223,7 +221,7 @@ const wordle: any = async function (
     Object.values(options).includes(text)
   )
   if (!wordIsValid) {
-    console.log(`${BgRed}Please type a valid word.${Reset}`);
+    log(`${BgRed}Please type a valid word.${Reset}`);
     return await wordle(
       language,
       option,
@@ -333,7 +331,8 @@ const wordle: any = async function (
 const getInput: any = (
   option:any,
   words: string[],
-  autoCompleteWords: any
+  autoCompleteWords: any,
+  autoCompleteOptions: any
 ) => {
   return {
     [options.EZ]: [{
