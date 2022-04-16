@@ -168,10 +168,10 @@ const tableBuilder: any = (history:string[]) => {
   const chances: any = [...Array(6).keys()]
   chances.forEach((i:any) => {
     const wordArray: any = history[i]
-    let row: any = emptyRow
-    if (wordArray) {
-      row = ` | ${wordArray.join(' | ')} |`
-    }
+    const row: string =
+      wordArray 
+      ? ` | ${wordArray.join(' | ')} |`
+      : emptyRow
     log(row)
     log(divider)
   })
