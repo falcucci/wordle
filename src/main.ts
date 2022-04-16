@@ -122,6 +122,44 @@ const getAutocompleteWords: any = (words:string[]) => {
   })
 }
 
+const getInput: any = (
+  option:any,
+  words: string[],
+  autoCompleteWords: any,
+  autoCompleteOptions: any
+) => {
+  return {
+    [options.EZ]: [{
+      type: 'autocomplete',
+      name: 'value',
+      message: 'Pick up your word to guess',
+      choices: [...autoCompleteOptions, ...autoCompleteWords]
+    }],
+    [options.EASY]: [{
+      type: 'text',
+      name: 'value',
+      message: 'Your guess?',
+      validate: (value:any) => (
+        !words.includes(value) &&
+          !Object.values(options).includes(value)
+          ? `${value} is not a valid word.`
+          : true
+      ) 
+    }],
+    [options.HARD]: [{
+      type: 'text',
+      name: 'value',
+      message: 'Your guess?',
+      validate: (value:any) => (
+        !words.includes(value) &&
+          !Object.values(options).includes(value)
+          ? `${value} is not a valid word.`
+          : true
+      ) 
+    }]
+  }[option]
+}
+
 const tableBuilder: any = (history:string[]) => {
   const divider: any = ` | ---`.repeat(5) + ' |'
   const emptyRow: any = ' |    '.repeat(5) + ' |' 
@@ -324,44 +362,6 @@ const wordle: any = async function (
     words,
     answer
   )
-}
-
-const getInput: any = (
-  option:any,
-  words: string[],
-  autoCompleteWords: any,
-  autoCompleteOptions: any
-) => {
-  return {
-    [options.EZ]: [{
-      type: 'autocomplete',
-      name: 'value',
-      message: 'Pick up your word to guess',
-      choices: [...autoCompleteOptions, ...autoCompleteWords]
-    }],
-    [options.EASY]: [{
-      type: 'text',
-      name: 'value',
-      message: 'Your guess?',
-      validate: (value:any) => (
-        !words.includes(value) &&
-          !Object.values(options).includes(value)
-          ? `${value} is not a valid word.`
-          : true
-      ) 
-    }],
-    [options.HARD]: [{
-      type: 'text',
-      name: 'value',
-      message: 'Your guess?',
-      validate: (value:any) => (
-        !words.includes(value) &&
-          !Object.values(options).includes(value)
-          ? `${value} is not a valid word.`
-          : true
-      ) 
-    }]
-  }[option]
 }
 
 run()
