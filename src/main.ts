@@ -30,12 +30,6 @@ const options: any = {
   QUIT: "QUIT"
 }
 
-const getAutocompleteOptions: any = (options:any) => {
-  return Object.values(options).map((option:any) => {
-    return { title: option, value: option }
-  })
-}
-
 const history: any = []
 
 const statuses: any = {
@@ -77,6 +71,8 @@ const selectChoices: any = [
   },
 ]
 
+const line: string = "\n"
+
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
 
@@ -114,9 +110,32 @@ const getAnswer: any = (language:string, file:string) => {
   return answers[random(answers.length)]
 }
 
+const getAutocompleteOptions: any = (options:any) => {
+  return Object.values(options).map((option:any) => {
+    return { title: option, value: option }
+  })
+}
+
 const getAutocompleteWords: any = (words:string[]) => {
   return words.map((word:any) => {
     return { title: word, value: word }
+  })
+}
+
+const tableBuilder: any = (history:string[]) => {
+  const divider: any = ` | ---`.repeat(5) + ' |'
+  const emptyRow: any = ' |    '.repeat(5) + ' |' 
+
+  log(divider)
+  const chances: any = [...Array(6).keys()]
+  chances.forEach((i:any) => {
+    const wordArray: any = history[i]
+    let row: any = emptyRow
+    if (wordArray) {
+      row = ` | ${wordArray.join(' | ')} |`
+    }
+    log(row)
+    log(divider)
   })
 }
 
@@ -149,7 +168,7 @@ const keyboardBuilder: any = (keys:any) => {
   const thirdRow: any =
     lettersArrayFulfilled.slice(lettersArray.indexOf('Z'))
   log('|        |', thirdRow.join(' | '), '|        |')
-  log('|', '-'.repeat(57), '|')
+  log(divider)
 }
 
 const run: any = async () => {
@@ -287,22 +306,8 @@ const wordle: any = async function (
   })
 
   history.push(rowFulfilled)
-  const divider: any = ` | ---`.repeat(5) + ' |'
-  const emptyRow: any = ' |    '.repeat(5) + ' |' 
-
-  log(divider)
-  const chances: any = [...Array(6).keys()]
-  chances.forEach((i:any) => {
-    const wordArray: any = history[i]
-    let row: any = emptyRow
-    if (wordArray) {
-      row = ` | ${wordArray.join(' | ')} |`
-    }
-    log(row)
-    log(divider)
-  })
-
-  log('\n');
+  tableBuilder(history)
+  log(line);
   keyboardBuilder(keyboardDict) 
 
   const congratsMsg: string =
