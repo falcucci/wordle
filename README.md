@@ -4,6 +4,8 @@ A word guessing game where players have six attempts to guess a five letter word
 
 The feedback for each guess is given in the form of colored tiles to indicate if letters match the correct position.
 
+![wordle](https://user-images.githubusercontent.com/33763843/163687939-5e9cf412-72ab-4ade-93fc-9e28187fe8ca.gif)
+
 ## Usage
 
 This game was't published at `npm` yet so run it locally to see how it works.
