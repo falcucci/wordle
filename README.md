@@ -3,8 +3,8 @@
 A word guessing game where players have six attempts to guess a five letter word.
 
 The feedback for each guess is given in the form of colored tiles to indicate if letters match the correct position.
+![wordle2](https://user-images.githubusercontent.com/33763843/163688245-cb3b6a68-cf61-419a-8b81-60fa5ce3b91c.gif)
 
-![wordle](https://user-images.githubusercontent.com/33763843/163687939-5e9cf412-72ab-4ade-93fc-9e28187fe8ca.gif)
 
 ## Usage
 
