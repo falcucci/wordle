@@ -160,6 +160,12 @@ const getInput: any = (
   }[option]
 }
 
+const repeatingLetters: any = (letters:any, value:string) => {
+  return letters.filter(
+    (letter:any) => letter === value
+  ).length > 1
+}
+
 const tableBuilder: any = (history:string[]) => {
   const divider: any = ` | ---`.repeat(5) + ' |'
   const emptyRow: any = ' |    '.repeat(5) + ' |' 
@@ -305,16 +311,14 @@ const wordle: any = async function (
   const rowFulfilled: any = []
   Object.values(rowDict).forEach((item:any, index:any) => {
     const value: any = item.value
+    const has: any = answerLetters.includes(value)
     const guessedLetter: any = answerLetters[index]
-    const has: any = answerLetters.includes(item.value)
-    const samePosition: any = has && guessedLetter === item.value
-    const repeatingAnswer: any = answerLetters.filter(
-      (a:any) => a === item.value
-    ).length > 1
-    const repeatingGuessing: any = guessLetters.filter(
-      (a:any) => a === item.value
-    ).length > 1
-    const position: any = answerLetters.indexOf(item.value)
+    const samePosition: any = guessedLetter === value
+    const position: any = answerLetters.indexOf(value)
+
+    const repeatingAnswer: boolean = repeatingLetters(answerLetters)
+    const repeatingGuessing: boolean = repeatingLetters(guessLetters)
+
     keyboardDict[value.toUpperCase()].color = BgWhite
 
     if (has) {
@@ -324,10 +328,13 @@ const wordle: any = async function (
     }
 
     const repeating: any = repeatingAnswer && repeatingGuessing
-    const shouldFill: boolean = (
-      has && rowDict[position].status === statuses.FILLED && !repeating
+    const ignore: boolean = (
+      has &&
+      rowDict[position].status === statuses.FILLED &&
+      !repeating
     )
-    if (shouldFill) {
+
+    if (ignore) {
       rowDict[index].color = BgWhite
       rowDict[index].status = statuses.FILLED
     }
