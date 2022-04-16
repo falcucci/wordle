@@ -30,12 +30,6 @@ const options: any = {
   QUIT: "QUIT"
 }
 
-const getAutocompleteOptions: any = (options:any) => {
-  return Object.values(options).map((option:any) => {
-    return { title: option, value: option }
-  })
-}
-
 const history: any = []
 
 const statuses: any = {
@@ -114,6 +108,12 @@ const getAnswer: any = (language:string, file:string) => {
   return answers[random(answers.length)]
 }
 
+const getAutocompleteOptions: any = (options:any) => {
+  return Object.values(options).map((option:any) => {
+    return { title: option, value: option }
+  })
+}
+
 const getAutocompleteWords: any = (words:string[]) => {
   return words.map((word:any) => {
     return { title: word, value: word }
@@ -149,7 +149,7 @@ const keyboardBuilder: any = (keys:any) => {
   const thirdRow: any =
     lettersArrayFulfilled.slice(lettersArray.indexOf('Z'))
   log('|        |', thirdRow.join(' | '), '|        |')
-  log('|', '-'.repeat(57), '|')
+  log(divider)
 }
 
 const run: any = async () => {
