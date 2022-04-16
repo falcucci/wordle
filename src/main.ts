@@ -141,7 +141,7 @@ const getInput: any = (
       message: 'Your guess?',
       validate: (value:any) => (
         !words.includes(value) &&
-          !Object.values(options).includes(value)
+        !Object.values(options).includes(value)
           ? `${value} is not a valid word.`
           : true
       ) 
@@ -152,7 +152,7 @@ const getInput: any = (
       message: 'Your guess?',
       validate: (value:any) => (
         !words.includes(value) &&
-          !Object.values(options).includes(value)
+        !Object.values(options).includes(value)
           ? `${value} is not a valid word.`
           : true
       ) 
