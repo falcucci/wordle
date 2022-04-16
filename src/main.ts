@@ -8,9 +8,6 @@ const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
 const BgGreen = "\x1b[42m"
 const BgYellow = "\x1b[43m"
-const BgBlue = "\x1b[44m"
-const BgMagenta = "\x1b[45m"
-const BgCyan = "\x1b[46m"
 const BgWhite = "\u001b[0m\u001b[7m"
 
 const languageChoices: any = [
