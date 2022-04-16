@@ -14,7 +14,7 @@ const BgCyan = "\x1b[46m"
 const BgWhite = "\u001b[0m\u001b[7m"
 
 const languageChoices: any = [
-  { title: '🇧🇪  german', value: 'german', disabled: true },
+  { title: '🇧🇪  german', value: 'german' },
   { title: '🇱🇷  english', value: 'english' },
   { title: '🇮🇹  italian', value: 'italian' },
   { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
