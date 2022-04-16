@@ -15,7 +15,7 @@ const languageChoices: any = [
   { title: '🇱🇷  english', value: 'english' },
   { title: '🇮🇹  italian', value: 'italian' },
   { title: '🇪🇸  spanish', value: 'spanish', disabled: true },
-  { title: '🇧🇷  portuguese', value: 'portuguese', disabled: true }
+  { title: '🇧🇷  portuguese', value: 'portuguese' }
 ]
 
 const options: any = {
