@@ -5,6 +5,8 @@ A word guessing game where players have six attempts to guess a five letter word
 ## How it works?
 The feedback for each guess is given in the form of colored tiles to indicate if letters match the correct position.
 
+This [Replit](https://replit.com/@alexfalcucci/wordle) is available if you want to preview and play the game without any pre setup.
+
 ## Briefing as .gif
 
 Here we have a brief about what it would be suppose to look:
