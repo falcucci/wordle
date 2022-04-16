@@ -326,13 +326,6 @@ const wordle: any = async function (
   )
 }
 
-
-/**
- * [TODO:description]
- *
- * @param {any} option - [TODO:description]
- * @returns {[TODO:type]} [TODO:description]
- */
 const getInput: any = (
   option:any,
   words: string[],
