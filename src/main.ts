@@ -407,16 +407,16 @@ const wordle: any = async function (
   keyboardBuilder(keyboardDict) 
 
   const status: string = getGameStatus(history, text, answer)
+  const action: any = getResultActionAfterwards(status)
   const message: string = getResultMessage(
     status,
     answer.toUpperCase()
   )
 
   message && log(message)
-  const action: any = getResultActionAfterwards(status)
-  if (action) { action() }
+  action && action()
 
-  // refactor this IFs statements for multiple times feature
+  // refactor these IFs statements for multiple times feature
   if (status === 'gameover') {
     const toggle: any = await prompts(getInput(
       'RETRY',
