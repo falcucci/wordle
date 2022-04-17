@@ -75,7 +75,6 @@ const congratsMsg: string =
 const goodbye: string = `${line}See you! 🍃 ${line}`
 
 const restartMsg: string = `${line} Restarting the game! ♻️  ${line}` 
-
 const gameoverMsg: string =
   `${line}Urghhh! maybe next time. 😊 ${line}`
 
@@ -114,10 +113,29 @@ const formatArrayOfKeys: any = (keys: string[], keyboard:any) => {
 
 const getGameStatus: any = (
   history:any,
+  option:string,
   input:string,
-  answer:string
+  answer:string,
+  payloads:any
 ) => {
-  const gameover: any = history.length === 6
+  const secondLast: any = payloads[payloads.length - 2]
+  const requiredLetters: any = secondLast &&
+    Object.values(secondLast).filter((payload:any) => {
+    return payload.required
+  }).map((payload:any) => {
+    return payload.value
+  })
+
+  const has: boolean = requiredLetters &&
+    requiredLetters.every((letter:string) => {
+    return input.split('').includes(letter)
+  }) 
+
+  const maxAttempts: boolean = history.length === 6 
+  const hard: boolean =
+    maxAttempts || option === options.HARD && secondLast && !has
+
+  const gameover: boolean = maxAttempts || hard
   const won: any = answer === input
   return (
     won
@@ -274,7 +292,7 @@ const restart: any = async (
   clear(0)
   log(restartMsg)
   const newAnswer: string = getAnswer(language, 'answers.txt')
-  return await wordle(language, option, words, newAnswer, [])
+  return await wordle(language, option, words, newAnswer, [], [])
 }
 
 const run: any = async () => {
@@ -295,6 +313,7 @@ const run: any = async () => {
   })
 
   const history: any = []
+  const payloads: any = []
   const option: string = select.value
   const language: any = languages.value
   const words : string[] = getWords(language, 'words.txt')
@@ -302,13 +321,34 @@ const run: any = async () => {
 
   switch (option) {
     case options.EZ:
-      await wordle(language, option, words, answer, history)
-    break
+      await wordle(
+        language,
+        option,
+        words,
+        answer,
+        history,
+        payloads
+      )
+      break
     case options.EASY:
-      await wordle(language, option, words, answer, history)
-    break
+      await wordle(
+        language,
+        option,
+        words,
+        answer,
+        history,
+        payloads
+      )
+      break
     case options.HARD:
-      await wordle(language, option, words, answer, history)
+      await wordle(
+        language,
+        option,
+        words,
+        answer,
+        history,
+        payloads
+      )
     break
     case options.STAT:
       break
@@ -327,7 +367,8 @@ const wordle: any = async function (
   option: string,
   words: string[],
   answer: string,
-  history: string[]
+  history: string[],
+  payloads: any
 ) {
   const autoCompleteWords: any = getAutocompleteWords(words)
   const autoCompleteOptions: any = getAutocompleteOptions(options)
@@ -359,7 +400,8 @@ const wordle: any = async function (
       option,
       words,
       answer,
-      history
+      history,
+      payloads
     )
   }
 
@@ -374,6 +416,7 @@ const wordle: any = async function (
     return rowDict[ parseInt(index) ] = {
       value: letter,
       color: BgWhite,
+      required: false,
       status: statuses.EMPTY
     }
   })
@@ -386,20 +429,18 @@ const wordle: any = async function (
     const samePosition: any = guessedLetter === value
     const position: any = answerLetters.indexOf(value)
 
-    const repeatingAnswer: boolean =
+    const repeating: boolean =
       repeatingLetters(answerLetters, value)
-    const repeatingGuessing: boolean =
-      repeatingLetters(guessLetters, value)
 
     keyboardDict[value.toUpperCase()].color = BgWhite
 
     if (has) {
       rowDict[index].color = BgYellow
       rowDict[index].status = statuses.FILLED
+      rowDict[index].required = option === options.HARD
       keyboardDict[value.toUpperCase()].color = BgYellow
     }
 
-    const repeating: any = repeatingAnswer && repeatingGuessing
     const ignore: boolean = (
       has &&
       rowDict[position].status === statuses.FILLED &&
@@ -414,6 +455,7 @@ const wordle: any = async function (
     if (samePosition) {
       rowDict[index].color = BgGreen
       rowDict[index].status = statuses.FILLED
+      rowDict[index].required = option === 'HARD'
       keyboardDict[value.toUpperCase()].color = BgGreen
     }
 
@@ -423,11 +465,18 @@ const wordle: any = async function (
   })
 
   history.push(rowFulfilled)
+  payloads.push(rowDict)
   tableBuilder(history)
   log(line);
   keyboardBuilder(keyboardDict) 
 
-  const status: string = getGameStatus(history, text, answer)
+  const status: string = getGameStatus(
+    history,
+    option,
+    text,
+    answer,
+    payloads
+  )
   const action: any = getResultActionAfterwards(status)
   const message: string = getResultMessage(
     status,
@@ -453,7 +502,14 @@ const wordle: any = async function (
     exit()
   }
 
-  return await wordle(language, option, words, answer, history)
+  return await wordle(
+    language,
+    option,
+    words,
+    answer,
+    history,
+    payloads
+  )
 }
 
 run()
