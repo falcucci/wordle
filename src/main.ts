@@ -1,7 +1,9 @@
+import util from 'util'
 import prompts  from 'prompts'
 import { readFileSync } from 'fs'
 
 const log: any = console.log
+const exit: any = process.exit
 const clear: any = console.clear
 
 const Reset = "\x1b[0m"
@@ -26,8 +28,6 @@ const options: any = {
   HELP: "HELP",
   QUIT: "QUIT"
 }
-
-const history: any = []
 
 const statuses: any = {
   EMPTY: 'empty',
@@ -70,6 +70,14 @@ const selectChoices: any = [
 
 const line: string = "\n"
 
+const congratsMsg: string =
+  `${line}🌈 CONGRATS, YOU GUESSED THE WORD %s ❤️"`
+
+const goodbye: string = `${line}See you! 🍃 ${line}`
+
+const gameoverMsg: string =
+  `${line}Urghhh! maybe next time. 😊 ${line}`
+
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
 
@@ -93,6 +101,35 @@ const formatArrayOfKeys: any = (keys: string[], keyboard:any) => {
     )
   })
   return lettersArrayFulfilled
+}
+
+const getGameStatus: any = (
+  history:any,
+  input:string,
+  answer:string
+) => {
+  const gameover: any = history.length === 6
+  const won: any = answer === input
+  return (
+    won
+    ? 'won'
+    : gameover
+      ? 'gameover'
+      : 'in progress'
+  )
+}
+
+const getResultActionAfterwards: any = (option:string) => {
+  return {
+    won: exit
+  }[option]
+}
+
+const getResultMessage: any = (option:string, answer:string) => {
+  return {
+    gameover: gameoverMsg,
+    won: util.format(congratsMsg, answer)
+  }[option]
 }
 
 const getWords: any = (language:string, file:string) => {
@@ -130,7 +167,7 @@ const getInput: any = (
       type: 'autocomplete',
       name: 'value',
       message: 'Pick up your word to guess',
-      choices: [...autoCompleteOptions, ...autoCompleteWords]
+      choices: [...autoCompleteWords, ...autoCompleteOptions]
     }],
     [options.EASY]: [{
       type: 'text',
@@ -153,6 +190,14 @@ const getInput: any = (
           ? `${value} is not a valid word.`
           : true
       ) 
+    }],
+    RETRY: [{
+      type: 'toggle',
+      name: 'value',
+      message: 'Play again?',
+      initial: true,
+      active: 'yes',
+      inactive: 'no'  
     }]
   }[option]
 }
@@ -229,6 +274,7 @@ const run: any = async () => {
     initial: 1
   })
 
+  const history: any = []
   const option: string = select.value
   const language: any = languages.value
   const words : string[] = getWords(language, 'words.txt')
@@ -236,19 +282,20 @@ const run: any = async () => {
 
   switch (option) {
     case options.EZ:
-      await wordle(language, option, words, answer)
+      await wordle(language, option, words, answer, history)
     break
     case options.EASY:
-      await wordle(language, option, words, answer)
+      await wordle(language, option, words, answer, history)
     break
     case options.HARD:
-      await wordle(language, option, words, answer)
+      await wordle(language, option, words, answer, history)
     break
     case options.STAT:
       break
     case options.HELP:
       break
     case options.QUIT:
+      log(goodbye)
       break
     default:
       break
@@ -259,7 +306,8 @@ const wordle: any = async function (
   language: string,
   option: string,
   words: string[],
-  answer: string
+  answer: string,
+  history: string[]
 ) {
   const autoCompleteWords: any = getAutocompleteWords(words)
   const autoCompleteOptions: any = getAutocompleteOptions(options)
@@ -286,7 +334,8 @@ const wordle: any = async function (
       language,
       option,
       words,
-      answer
+      answer,
+      history
     )
   }
 
@@ -352,20 +401,35 @@ const wordle: any = async function (
   log(line);
   keyboardBuilder(keyboardDict) 
 
-  const congratsMsg: string =
-    `\n🌈 CONGRATS, YOU GUESSED THE WORD ${answer.toUpperCase()} ❤️"`
+  const status: string = getGameStatus(history, text, answer)
+  const message: string = getResultMessage(
+    status,
+    answer.toUpperCase()
+  )
 
-  if (answer === text) {
-    log(congratsMsg)
-    process.exit(0)
+  message && log(message)
+  const action: any = getResultActionAfterwards(status)
+  if (action) { action() }
+
+  // refactor this IFs statements for multiple times feature
+  if (status === 'gameover') {
+    const toggle: any = await prompts(getInput(
+      'RETRY',
+      words,
+      autoCompleteWords,
+      autoCompleteOptions
+    ))
+    if (toggle.value) {
+      clear(0)
+      const newAnswer: string = getAnswer(language, 'answers.txt')
+      return await wordle(language, option, words, newAnswer, [])
+    }
+
+    log(goodbye)
+    exit(0)
   }
 
-  return await wordle(
-    language,
-    option,
-    words,
-    answer
-  )
+  return await wordle(language, option, words, answer, history)
 }
 
 run()
