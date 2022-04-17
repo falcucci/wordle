@@ -1,6 +1,6 @@
-# :rainbow: WORDLE :rainbow:
+<h1 align="center">🌈 WORDLE 🌈</h1>
 
-A word guessing game where players have six attempts to guess a five letter word.
+<p align="center">A word guessing game where players have six attempts to guess a five letter word.</p>
 
 ## How it works?
 The feedback for each guess is given in the form of colored tiles to indicate if letters match the correct position.
