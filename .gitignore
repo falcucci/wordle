@@ -30,6 +30,8 @@ bower_components
 .idea
 *.iml
 
+.upm
+
 # OS metadata
 .DS_Store
 Thumbs.db
