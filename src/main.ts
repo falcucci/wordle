@@ -362,8 +362,10 @@ const wordle: any = async function (
     const samePosition: any = guessedLetter === value
     const position: any = answerLetters.indexOf(value)
 
-    const repeatingAnswer: boolean = repeatingLetters(answerLetters)
-    const repeatingGuessing: boolean = repeatingLetters(guessLetters)
+    const repeatingAnswer: boolean =
+      repeatingLetters(answerLetters, value)
+    const repeatingGuessing: boolean =
+      repeatingLetters(guessLetters, value)
 
     keyboardDict[value.toUpperCase()].color = BgWhite
 
