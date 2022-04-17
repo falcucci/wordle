@@ -3,7 +3,6 @@ import prompts  from 'prompts'
 import { readFileSync } from 'fs'
 
 const log: any = console.log
-const exit: any = process.exit
 const clear: any = console.clear
 
 const Reset = "\x1b[0m"
@@ -75,11 +74,13 @@ const congratsMsg: string =
 
 const goodbye: string = `${line}See you! 🍃 ${line}`
 
+const restartMsg: string = `${line} Restarting the game! ♻️  ${line}` 
 const gameoverMsg: string =
   `${line}Urghhh! maybe next time. 😊 ${line}`
 
 const validation: string =
   `${BgRed}Please type a valid word.${Reset}`
+
 
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
@@ -88,6 +89,11 @@ const keyboardDict: any  = {}
 qwert.split(' ').map((letter:any) => {
   return keyboardDict[ letter ] = { color: Reset }
 })
+
+const exit: any = () => {
+  log(goodbye)
+  return process.exit()
+}
 
 const random = (a = 1, b = 0) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -260,6 +266,17 @@ const keyboardBuilder: any = (keys:any) => {
   log(divider)
 }
 
+const restart: any = async (
+  language: string,
+  option: string,
+  words: string[],
+) => {
+  clear(0)
+  log(restartMsg)
+  const newAnswer: string = getAnswer(language, 'answers.txt')
+  return await wordle(language, option, words, newAnswer, [])
+}
+
 const run: any = async () => {
   const select: any = await prompts({
     type: 'select',
@@ -298,7 +315,7 @@ const run: any = async () => {
     case options.HELP:
       break
     case options.QUIT:
-      log(goodbye)
+      exit()
       break
     default:
       break
@@ -321,11 +338,15 @@ const wordle: any = async function (
     autoCompleteOptions
   ))
 
-  if (Object.values(options).includes(input.value)) {
-    return
+  const text: any = input.value
+
+  if ([options.EZ, options.EASY, options.HARD].includes(text)) {
+    return await restart(language, option, words)
   }
 
-  const text: any = input.value
+  if ([options.QUIT, options.STAT].includes(text)) {
+    exit()
+  }
 
   const wordIsValid = (
     (words.includes(text) && text.length === 5) ||
@@ -424,14 +445,12 @@ const wordle: any = async function (
       autoCompleteWords,
       autoCompleteOptions
     ))
+
     if (toggle.value) {
-      clear(0)
-      const newAnswer: string = getAnswer(language, 'answers.txt')
-      return await wordle(language, option, words, newAnswer, [])
+      return await restart(language, option, words)
     }
 
-    log(goodbye)
-    exit(0)
+    exit()
   }
 
   return await wordle(language, option, words, answer, history)
