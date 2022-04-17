@@ -75,12 +75,12 @@ const congratsMsg: string =
 const goodbye: string = `${line}See you! 🍃 ${line}`
 
 const restartMsg: string = `${line} Restarting the game! ♻️  ${line}` 
+
 const gameoverMsg: string =
   `${line}Urghhh! maybe next time. 😊 ${line}`
 
 const validation: string =
   `${BgRed}Please type a valid word.${Reset}`
-
 
 const qwert: any =
   'Q W E R T Y U I O P A S D F G H J K L Z X C V B N M';
