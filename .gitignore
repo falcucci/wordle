@@ -30,7 +30,11 @@ bower_components
 .idea
 *.iml
 
+*.replit
+.replit
+
 .upm
+*.upm
 
 # OS metadata
 .DS_Store
