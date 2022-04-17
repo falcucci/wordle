@@ -30,9 +30,6 @@ bower_components
 .idea
 *.iml
 
-*.replit
-.replit
-
 .upm
 *.upm
 
