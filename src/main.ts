@@ -148,6 +148,27 @@ const getGameStatus: any = (
   )
 }
 
+const ask: any = async (
+  option:string,
+  language:string,
+  words:string[],
+  autoCompleteWords:string[],
+  autoCompleteOptions:string[]
+) => {
+  const toggle: any = await prompts(getInput(
+    'RESTART',
+    words,
+    autoCompleteWords,
+    autoCompleteOptions
+  ))
+
+  if (toggle.value) {
+    await restart(language, option, words)
+  }
+
+  exit()
+}
+
 const getResultActionAfterwards: any = async (
   status:string,
   option:string,
@@ -158,33 +179,23 @@ const getResultActionAfterwards: any = async (
 ) => {
   return {
     won: async () => {
-      const toggle: any = await prompts(getInput(
-        'RESTART',
+      return await ask(
+        option,
+        language,
         words,
         autoCompleteWords,
         autoCompleteOptions
-      ))
-
-      if (toggle.value) {
-        await restart(language, option, words)
-      }
-
-      exit()
+      )
     },
     gameover: async () => {
-      const toggle: any = await prompts(getInput(
-        'RESTART',
+      return await ask(
+        option,
+        language,
         words,
         autoCompleteWords,
         autoCompleteOptions
-      ))
-
-      if (toggle.value) {
-        await restart(language, option, words)
-      }
-
-      exit()
-    }
+      )
+    },
   }[status]
 }
 
