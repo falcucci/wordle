@@ -366,46 +366,23 @@ const run: any = async () => {
   const words : string[] = getWords(language, 'words.txt')
   const answer: string = getAnswer(language, 'answers.txt')
 
+  const args: any[] = [
+    language,
+    option,
+    words,
+    answer,
+    history,
+    payloads
+  ]
+
   switch (option) {
-    case options.EZ:
-      await wordle(
-        language,
-        option,
-        words,
-        answer,
-        history,
-        payloads
-      )
-      break
-    case options.EASY:
-      await wordle(
-        language,
-        option,
-        words,
-        answer,
-        history,
-        payloads
-      )
-      break
-    case options.HARD:
-      await wordle(
-        language,
-        option,
-        words,
-        answer,
-        history,
-        payloads
-      )
-    break
-    case options.STAT:
-      break
-    case options.HELP:
-      break
-    case options.QUIT:
-      exit()
-      break
-    default:
-      break
+    case options.EZ: await wordle(...args)
+    case options.EASY: await wordle(...args) 
+    case options.HARD: await wordle(...args)  
+    case options.STAT: break
+    case options.HELP: break
+    case options.QUIT: exit()
+    default: break
   } 
 }
 
