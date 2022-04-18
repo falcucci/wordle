@@ -157,10 +157,23 @@ const getResultActionAfterwards: any = async (
   autoCompleteOptions:string[]
 ) => {
   return {
-    won: exit,
+    won: async () => {
+      const toggle: any = await prompts(getInput(
+        'RESTART',
+        words,
+        autoCompleteWords,
+        autoCompleteOptions
+      ))
+
+      if (toggle.value) {
+        await restart(language, option, words)
+      }
+
+      exit()
+    },
     gameover: async () => {
       const toggle: any = await prompts(getInput(
-        'RETRY',
+        'RESTART',
         words,
         autoCompleteWords,
         autoCompleteOptions
@@ -241,7 +254,7 @@ const getInput: any = (
           : true
       ) 
     }],
-    RETRY: [{
+    RESTART: [{
       type: 'toggle',
       name: 'value',
       message: 'Play again?',
@@ -445,7 +458,8 @@ const wordle: any = async function (
   })
 
   const rowFulfilled: any = []
-  Object.values(rowDict).forEach((item:any, index:any) => {
+  const dictValues: any = Object.values(rowDict)
+  dictValues.forEach((item:any, index:any) => {
     const value: any = item.value
     const has: any = answerLetters.includes(value)
     const guessedLetter: any = answerLetters[index]
