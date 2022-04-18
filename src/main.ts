@@ -33,6 +33,12 @@ const statuses: any = {
   FILLED: 'filled'
 }
 
+const gameStatus: any = {
+  WON: 'won',
+  GAMEOVER: 'gameover',
+  INPROGRESS: 'inprogress'
+}
+
 const selectChoices: any = [
   {
     title: 'EZ',
@@ -135,10 +141,10 @@ const getGameStatus: any = (
   const won: any = answer === input
   return (
     won
-    ? 'won'
+    ? gameStatus.WON
     : gameover
-      ? 'gameover'
-      : 'in progress'
+      ? gameStatus.GAMEOVER
+      : gameStatus.INPROGRESS
   )
 }
 
