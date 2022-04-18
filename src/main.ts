@@ -148,10 +148,31 @@ const getGameStatus: any = (
   )
 }
 
-const getResultActionAfterwards: any = (option:string) => {
+const getResultActionAfterwards: any = async (
+  status:string,
+  option:string,
+  language:string,
+  words:string[],
+  autoCompleteWords:string[],
+  autoCompleteOptions:string[]
+) => {
   return {
-    won: exit
-  }[option]
+    won: exit,
+    gameover: async () => {
+      const toggle: any = await prompts(getInput(
+        'RETRY',
+        words,
+        autoCompleteWords,
+        autoCompleteOptions
+      ))
+
+      if (toggle.value) {
+        await restart(language, option, words)
+      }
+
+      exit()
+    }
+  }[status]
 }
 
 const getResultMessage: any = (option:string, answer:string) => {
@@ -479,30 +500,21 @@ const wordle: any = async function (
     answer,
     payloads
   )
-  const action: any = getResultActionAfterwards(status)
+  const action: any = await getResultActionAfterwards(
+    status,
+    option,
+    language,
+    words,
+    autoCompleteWords,
+    autoCompleteOptions
+  )
   const message: string = getResultMessage(
     status,
     answer.toUpperCase()
   )
 
   message && log(message)
-  action && action()
-
-  // refactor these IFs statements for multiple times feature
-  if (status === 'gameover') {
-    const toggle: any = await prompts(getInput(
-      'RETRY',
-      words,
-      autoCompleteWords,
-      autoCompleteOptions
-    ))
-
-    if (toggle.value) {
-      return await restart(language, option, words)
-    }
-
-    exit()
-  }
+  action && await action()
 
   return await wordle(
     language,
