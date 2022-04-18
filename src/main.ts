@@ -121,13 +121,11 @@ const getGameStatus: any = (
   const secondLast: any = payloads[payloads.length - 2]
   const has: any = secondLast &&
     Object.values(secondLast)
-    .filter((payload:any) => {
-    return payload.required
-  }).map((payload:any) => {
-    return payload.value
-  }).every((letter:string) => {
-    return input.split('').includes(letter)
-  })                
+    .filter((payload:any) => { return payload.required })
+    .map((payload:any) => { return payload.value })
+    .every((letter:string) => {
+      return input.split('').includes(letter)
+    })                
 
   const maxAttempts: boolean = history.length === 6 
   const hard: boolean =
