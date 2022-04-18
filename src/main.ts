@@ -451,7 +451,7 @@ const wordle: any = async function (
     if (samePosition) {
       rowDict[index].color = BgGreen
       rowDict[index].status = statuses.FILLED
-      rowDict[index].required = option === 'HARD'
+      rowDict[index].required = option === options.HARD
       keyboardDict[value.toUpperCase()].color = BgGreen
     }
 
