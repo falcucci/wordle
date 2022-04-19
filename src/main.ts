@@ -42,7 +42,7 @@ const gameStatus: any = {
 const selectChoices: any = [
   {
     title: 'EZZZ',
-    description: 'easy mode but using autocomplete :)',
+    description: 'easy mode but using autocomplete 💚',
     value: 'EZZZ'
   },
   {
