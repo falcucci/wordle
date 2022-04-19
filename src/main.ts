@@ -20,7 +20,7 @@ const languageChoices: any = [
 ]
 
 const options: any = {
-  EZ: "EZ",
+  EZZZ: "EZZZ",
   EASY: "EASY",
   HARD: "HARD",
   STAT: "STAT",
@@ -41,9 +41,9 @@ const gameStatus: any = {
 
 const selectChoices: any = [
   {
-    title: 'EZ',
+    title: 'EZZZ',
     description: 'easy mode but using autocomplete :)',
-    value: 'EZ'
+    value: 'EZZZ'
   },
   {
     title: 'EASY',
@@ -237,7 +237,7 @@ const getInput: any = (
   autoCompleteOptions: any
 ) => {
   return {
-    [options.EZ]: [{
+    [options.EZZZ]: [{
       type: 'autocomplete',
       name: 'value',
       message: 'Pick up your word to guess',
@@ -376,7 +376,7 @@ const run: any = async () => {
   ]
 
   switch (option) {
-    case options.EZ: await wordle(...args)
+    case options.EZZZ: await wordle(...args)
     case options.EASY: await wordle(...args) 
     case options.HARD: await wordle(...args)  
     case options.STAT: break
@@ -405,7 +405,7 @@ const wordle: any = async function (
 
   const text: any = input.value
 
-  if ([options.EZ, options.EASY, options.HARD].includes(text)) {
+  if ([options.EZZZ, options.EASY, options.HARD].includes(text)) {
     return await restart(language, option, words)
   }
 
