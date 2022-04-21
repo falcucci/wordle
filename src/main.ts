@@ -28,6 +28,12 @@ const options: any = {
   QUIT: "QUIT"
 }
 
+const statistics: any = {
+  count: 0,
+  wins: 0,
+  losses: 0
+}
+
 const statuses: any = {
   EMPTY: 'empty',
   FILLED: 'filled'
@@ -153,7 +159,8 @@ const ask: any = async (
   language:string,
   words:string[],
   autoCompleteWords:string[],
-  autoCompleteOptions:string[]
+  autoCompleteOptions:string[],
+  result:any
 ) => {
   const toggle: any = await prompts(getInput(
     'RESTART',
@@ -163,9 +170,10 @@ const ask: any = async (
   ))
 
   if (toggle.value) {
-    await restart(language, option, words)
+    await restart(language, option, words, result)
   }
 
+  console.table(result);
   exit()
 }
 
@@ -174,28 +182,60 @@ const getResultActionAfterwards: any = async (
   option:string,
   language:string,
   words:string[],
+  answer:string,
+  history:string[],
+  payloads: any,
   autoCompleteWords:string[],
-  autoCompleteOptions:string[]
+  autoCompleteOptions:string[],
+  result:any
 ) => {
   return {
     won: async () => {
+      const newResult: any = {
+        count: result.count + 1,
+        wins: result.wins + 1,
+        losses: result.losses
+      }
       return await ask(
         option,
         language,
         words,
         autoCompleteWords,
-        autoCompleteOptions
+        autoCompleteOptions,
+        newResult
       )
     },
     gameover: async () => {
+      const newResult: any = {
+        count: result.count + 1,
+        wins: result.wins,
+        losses: result.losses + 1 
+      }
       return await ask(
         option,
         language,
         words,
         autoCompleteWords,
-        autoCompleteOptions
+        autoCompleteOptions,
+        newResult
       )
     },
+    inprogress: async () => {
+      const newResult: any = {
+        count: result.count + 1,
+        wins: result.wins,
+        losses: result.losses
+      }
+      return await wordle(
+        language,
+        option,
+        words,
+        answer,
+        history,
+        payloads,
+        newResult
+      )
+    }
   }[status]
 }
 
@@ -335,11 +375,20 @@ const restart: any = async (
   language: string,
   option: string,
   words: string[],
+  result: any
 ) => {
   clear(0)
   log(restartMsg)
   const newAnswer: string = getAnswer(language, 'answers.txt')
-  return await wordle(language, option, words, newAnswer, [], [])
+  return await wordle(
+    language,
+    option,
+    words,
+    newAnswer,
+    [],
+    [],
+    result
+  )
 }
 
 const run: any = async () => {
@@ -372,7 +421,8 @@ const run: any = async () => {
     words,
     answer,
     history,
-    payloads
+    payloads,
+    statistics
   ]
 
   switch (option) {
@@ -392,7 +442,8 @@ const wordle: any = async function (
   words: string[],
   answer: string,
   history: string[],
-  payloads: any
+  payloads: any,
+  result: any
 ) {
   const autoCompleteWords: any = getAutocompleteWords(words)
   const autoCompleteOptions: any = getAutocompleteOptions(options)
@@ -406,7 +457,7 @@ const wordle: any = async function (
   const text: any = input.value
 
   if ([options.EZZZ, options.EASY, options.HARD].includes(text)) {
-    return await restart(language, option, words)
+    return await restart(language, option, words, result)
   }
 
   if ([options.QUIT, options.STAT].includes(text)) {
@@ -425,7 +476,8 @@ const wordle: any = async function (
       words,
       answer,
       history,
-      payloads
+      payloads,
+      result
     )
   }
 
@@ -502,14 +554,20 @@ const wordle: any = async function (
     answer,
     payloads
   )
+
   const action: any = await getResultActionAfterwards(
     status,
     option,
     language,
     words,
+    answer,
+    history,
+    payloads,
     autoCompleteWords,
-    autoCompleteOptions
+    autoCompleteOptions,
+    result
   )
+
   const message: string = getResultMessage(
     status,
     answer.toUpperCase()
@@ -517,15 +575,6 @@ const wordle: any = async function (
 
   message && log(message)
   action && await action()
-
-  return await wordle(
-    language,
-    option,
-    words,
-    answer,
-    history,
-    payloads
-  )
 }
 
 run()
