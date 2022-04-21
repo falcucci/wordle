@@ -461,7 +461,19 @@ const wordle: any = async function (
     return await restart(language, option, words, result)
   }
 
-  if ([options.QUIT, options.STAT].includes(text)) {
+  if (text === options.STAT) {
+    table(result)
+    return await ask(
+      option,
+      language,
+      words,
+      autoCompleteWords,
+      autoCompleteOptions,
+      result
+    )
+  }
+
+  if ([options.QUIT].includes(text)) {
     exit()
   }
 
