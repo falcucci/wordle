@@ -4,6 +4,7 @@ import { readFileSync } from 'fs'
 
 const log: any = console.log
 const clear: any = console.clear
+const table: any = console.table
 
 const Reset = "\x1b[0m"
 const BgRed = "\x1b[41m"
@@ -63,8 +64,8 @@ const selectChoices: any = [
   },
   {
     title: 'STAT',
-    value: 'print some statistics',
-    disabled: true
+    value: 'STAT',
+    description: 'print some statistics'
   },
   {
     title: 'HELP',
@@ -173,7 +174,7 @@ const ask: any = async (
     await restart(language, option, words, result)
   }
 
-  console.table(result);
+  table(result);
   exit()
 }
 
@@ -429,7 +430,7 @@ const run: any = async () => {
     case options.EZZZ: await wordle(...args)
     case options.EASY: await wordle(...args) 
     case options.HARD: await wordle(...args)  
-    case options.STAT: break
+    case options.STAT: await table(statistics) 
     case options.HELP: break
     case options.QUIT: exit()
     default: break
