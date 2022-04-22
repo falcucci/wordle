@@ -30,9 +30,10 @@ const options: any = {
 }
 
 const statistics: any = {
-  count: 0,
+  attempts: 0,
+  games: 0,
   wins: 0,
-  losses: 0
+  losses: 0,
 }
 
 const statuses: any = {
@@ -193,9 +194,10 @@ const getResultActionAfterwards: any = async (
   return {
     won: async () => {
       const newResult: any = {
-        count: result.count + 1,
+        attempts: result.attempts + 1,
         wins: result.wins + 1,
-        losses: result.losses
+        losses: result.losses,
+        games: result.games + 1
       }
       return await ask(
         option,
@@ -208,9 +210,10 @@ const getResultActionAfterwards: any = async (
     },
     gameover: async () => {
       const newResult: any = {
-        count: result.count + 1,
+        attempts: result.attempts + 1,
         wins: result.wins,
-        losses: result.losses + 1 
+        losses: result.losses + 1,
+        games: result.games + 1
       }
       return await ask(
         option,
@@ -223,9 +226,10 @@ const getResultActionAfterwards: any = async (
     },
     inprogress: async () => {
       const newResult: any = {
-        count: result.count + 1,
+        attempts: result.attempts + 1,
         wins: result.wins,
-        losses: result.losses
+        losses: result.losses,
+        games: result.games
       }
       return await wordle(
         language,
